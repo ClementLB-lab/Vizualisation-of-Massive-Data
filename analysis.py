@@ -7,13 +7,17 @@ from enum import Enum, auto
 
 
 class PhysiologicParameters(Enum):
-    TEMPF = 'Temperature'
-    PULSE = 'Pulse Rate'
-    RESPR = 'Respiration'
-    BPSYS = 'Systolic Blood Pressure'
-    BPDIAS ='Diastolic Blood Pressure'
-    POPCT = 'Oxygen Saturation'
-    SCORE = 'Score'
+    AGE = "Age"
+    SEX = "Sex"
+    CP = "Chest Pain Type"
+    TRESTBPS = "Resting Blood Pressure"
+    CHOL = "Serum Cholestoral"
+    FBS = "Fasting Blood Sugar"
+    RESTECG = "Resting Electrocardiographic Results"
+    THALACH = 'Maximum Heart Rate Achieved'
+    EXANG = 'Exercise Induced Angina'
+    OLDPEAK = 'ST depression induced by exercise relative to rest'
+    SLOPE = 'Slope of the peak exercise ST segment'
 
 
 # Mean
@@ -32,10 +36,10 @@ def histogram(df):
     global PhysiologicParameters
     # iterating the columns
     for col in df.columns[1:]:
-        mean = my_mean(df[col])
-        print("mean : ", mean)
-        print("standard deviation : ", standard_deviation(mean, df[col]))
-        plt.title("Distribution of " + PhysiologicParameters[col].value,  fontsize = 16)
+        mean = round(my_mean(df[col]), 2)
+        std = round(standard_deviation(mean, df[col]), 2)
+        print("\n-----", PhysiologicParameters[col].value, "-----\nMean : ", mean, "\nStandard Deviation : ", std)
+        plt.title("Distribution of " + PhysiologicParameters[col].value + ':\n' + f'$\mu={mean}$, $\sigma={std}$',  fontsize = 16)
         plt.xlabel(col)
         df[col].plot(kind='hist')
         plt.savefig(col.lower() + ".pdf")
@@ -105,10 +109,10 @@ def detect_outlier(data):
 
 
 # making data frame 
-df = pd.read_csv("data2.csv")
+df = pd.read_csv("heart.csv")
 
 histogram(df)
 
 heatmap(df)
 
-old_detect_outlier(df)
+#old_detect_outlier(df)

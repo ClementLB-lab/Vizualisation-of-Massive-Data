@@ -6,14 +6,17 @@ from enum import Enum, auto
 plt.style.use('seaborn')
 
 class PhysiologicParameters(Enum):
-    TEMPF = 'Temperature'
-    PULSE = 'Pulse Rate'
-    RESPR = 'Respiration'
-    BPSYS = 'Systolic Blood Pressure'
-    BPDIAS ='Diastolic Blood Pressure'
-    POPCT = 'Oxygen Saturation'
-    SCORE = 'Score'
-
+    AGE = "Age"
+    SEX = "Sex"
+    CP = "Chest Pain Type"
+    TRESTBPS = "Resting Blood Pressure"
+    CHOL = "Serum Cholestoral"
+    FBS = "Fasting Blood Sugar"
+    RESTECG = "Resting Electrocardiographic Results"
+    THALACH = 'Maximum Heart Rate Achieved'
+    EXANG = 'Exercise Induced Angina'
+    OLDPEAK = 'ST depression induced by exercise relative to rest'
+    SLOPE = 'Slope of the peak exercise ST segment'
 
 def choice(firstOption):
     return "first" if firstOption == -1 else "second"
@@ -31,10 +34,10 @@ def menuOptions(colList, firstOption):
 
 def menu(colList, firstOption):
     option = -1
-    while option < 0 or option > 7:
+    while option < 0 or option > 11:
         menuOptions(colList, firstOption)
         option = int(input(""))
-        if option < 0 or option > 7:
+        if option < 0 or option > 11:
             print("Invalid option")
         elif option == firstOption:
             print("You already have selected", PhysiologicParameters[colList[option]].value, ". Please, choose an another parameter.")
@@ -47,7 +50,7 @@ def menu(colList, firstOption):
                 return firstOption, option
 
 
-data = pd.read_csv("data.csv")
+data = pd.read_csv("heart.csv")
 
 res = menu(data.columns.values, -1)
 
