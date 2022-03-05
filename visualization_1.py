@@ -34,10 +34,13 @@ def menuOptions(colList, firstOption):
 
 def menu(colList, firstOption):
     option = -1
-    while option < 0 or option > 11:
+    while option < 0 or option > 11 and not option != 42:
         menuOptions(colList, firstOption)
-        option = int(input(""))
-        if option < 0 or option > 11:
+        option = int(input("") or "42")
+        if option == 42:
+            print("You have chosen the default usage.")
+            return option
+        elif option < 0 or option > 11:
             print("Invalid option")
         elif option == firstOption:
             print("You already have selected", PhysiologicParameters[colList[option]].value, ". Please, choose an another parameter.")
@@ -63,7 +66,10 @@ print(x)
 y = data[data.columns[res[1]]].values
 print(y)
 
-plt.scatter(x, y)
+if x != 42 and y != 42:
+    plt.scatter(x, y)
 
-plt.tight_layout()
-plt.show()
+    plt.tight_layout()
+    plt.show()
+else:
+    pd.plotting.scatter_matrix(data.values, figsize=(10,10), marker = 'o')
