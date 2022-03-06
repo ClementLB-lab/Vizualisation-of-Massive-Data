@@ -38,7 +38,6 @@ def menuOptions(colList, firstOption, categoricalList):
     i = 1
     while i < len(colList):
         if firstOption != i:
-            print(firstOption)
             if firstOption != -1 and (oneCategoricalChoice(firstOption, categoricalList) == True and oneCategoricalChoice(i, categoricalList) == True):
                 print("[ X ] =>", PhysiologicParameters[colList[i]].value)
             else:
@@ -105,8 +104,6 @@ else:
     x = randomXAxis()
     x_value=data.columns.values[x]
     y_value=data.columns.values[randomYAxis(x, categoricalList)]
-    print(x_value)
-    print(y_value)
     
 data = data.drop('ID', axis=1)
 sns.jointplot(x=x_value, y=y_value, data=data.sample(int(range)), kind="kde", shade=True)
