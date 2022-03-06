@@ -16,8 +16,11 @@ class PhysiologicParameters(Enum):
     RESTECG = "Resting Electrocardiographic Results"
     THALACH = 'Maximum Heart Rate Achieved'
     EXANG = 'Exercise Induced Angina'
-    OLDPEAK = 'ST depression induced by exercise relative to rest'
+    OLDPEAK = 'ST wave induced by exercise relative to rest'
     SLOPE = 'Slope of the peak exercise ST segment'
+    CA = 'Number of major vessels'
+    THAL = 'Thalium Stress Test result'
+    TARGET = 'risk of heart disease'
 
 
 # Mean

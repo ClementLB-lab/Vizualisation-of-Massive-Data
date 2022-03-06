@@ -17,6 +17,9 @@ class PhysiologicParameters(Enum):
     EXANG = 'Exercise Induced Angina'
     OLDPEAK = 'ST depression induced by exercise relative to rest'
     SLOPE = 'Slope of the peak exercise ST segment'
+    CA = 'Number of major vessels'
+    THAL = 'Thalium Stress Test result'
+    TARGET = 'risk of heart disease'
 
 def choice(firstOption):
     return "first" if firstOption == -1 else "second"
@@ -34,13 +37,13 @@ def menuOptions(colList, firstOption):
 
 def menu(colList, firstOption):
     option = -1
-    while option < 0 or option > 11 and not option != 42:
+    while option < 0 or option > 14 and not option != 42:
         menuOptions(colList, firstOption)
         option = int(input("") or "42")
         if option == 42:
             print("You have chosen the default usage.")
             return option
-        elif option < 0 or option > 11:
+        elif option < 0 or option > 14:
             print("Invalid option")
         elif option == firstOption:
             print("You already have selected", PhysiologicParameters[colList[option]].value, ". Please, choose an another parameter.")
