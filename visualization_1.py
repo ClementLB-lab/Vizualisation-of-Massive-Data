@@ -26,18 +26,18 @@ def choice(firstOption):
     return "first" if firstOption == -1 else "second"
 
 
-def oneCategoricalChoice(option):
-    if option == 2 or option == 3 or option == 6 or option == 7 or option == 9 or option == 12 or option == 13 or option == 14:
+def oneCategoricalChoice(option, categoricalList):
+    if option in categoricalList:
         return True
     return False
 
 
-def menuOptions(colList, firstOption):
+def menuOptions(colList, firstOption, categoricalList):
     print("Choose your", choice(firstOption), "Physiologic parameter :\n")
     i = 1
     while i < len(colList):
         if firstOption != i:
-            if firstOption != -1 and oneCategoricalChoice(i) == True:
+            if firstOption != -1 and (oneCategoricalChoice(firstOption, categoricalList) == True and oneCategoricalChoice(i, categoricalList) == True):
                 print("[ X ] =>", PhysiologicParameters[colList[i]].value)
             else:
                 print("[", i, "] =>", PhysiologicParameters[colList[i]].value)
@@ -45,10 +45,10 @@ def menuOptions(colList, firstOption):
     print("[ 0 ] => Exit")
 
 
-def menu(colList, firstOption):
+def menu(colList, firstOption, categoricalList):
     option = -1
     while option < 0 or option > 14 and not option != 42:
-        menuOptions(colList, firstOption)
+        menuOptions(colList, firstOption, categoricalList)
         option = int(input("") or "42")
         if option == 42:
             print("You have chosen the default usage.")
@@ -58,19 +58,20 @@ def menu(colList, firstOption):
         elif option == firstOption:
             print("You already have selected", PhysiologicParameters[colList[option]].value, ". Please, choose an another parameter.")
             option = 0
-        elif oneCategoricalChoice(firstOption) == True and oneCategoricalChoice(option) == True:
+        elif oneCategoricalChoice(firstOption, categoricalList) == True and oneCategoricalChoice(option, categoricalList) == True:
             print("You already have selected one categorical data. Please, choose an uncategorical.")
         elif option != 0:
             print(PhysiologicParameters[colList[option]].value, "has been choosed")
             if firstOption == -1:
-                return menu(colList, option)
+                return menu(colList, option, categoricalList)
             else:
                 return firstOption, option
 
 
 data = pd.read_csv("heart.csv")
+categoricalList = [2, 3, 6, 7, 9, 11, 12, 13, 14]
 
-res = menu(data.columns.values, -1)
+res = menu(data.columns.values, -1, categoricalList)
 
 if res == None:
     print("Exit")
@@ -88,7 +89,7 @@ if res != 42 and res[0] != 42 and res[1] != 42:
     x_value=data.columns.values[res[0]]
     y_value=data.columns.values[res[1]]
     data = data.drop('ID', axis=1)
-    if oneCategoricalChoice(res[0]) == False and oneCategoricalChoice(res[1]) == False:
+    if oneCategoricalChoice(res[0], categoricalList) == False and oneCategoricalChoice(res[1], categoricalList) == False:
         sns.scatterplot(x=x_value, y=y_value, data=data.sample(int(range)))
     else:
         sns.catplot(x=x_value, y=y_value, data=data.sample(int(range)))
