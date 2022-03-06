@@ -81,7 +81,7 @@ def heatmap(heartDiseases):
 
 
 # making data frame 
-df = pd.read_csv("heart.csv")
+df = pd.read_csv("data.csv")
 
 histogram(df)
 

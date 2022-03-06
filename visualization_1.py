@@ -68,7 +68,7 @@ def menu(colList, firstOption, categoricalList):
                 return firstOption, option
 
 
-data = pd.read_csv("heart.csv")
+data = pd.read_csv("data.csv")
 categoricalList = [2, 3, 6, 7, 9, 11, 12, 13, 14]
 
 res = menu(data.columns.values, -1, categoricalList)
