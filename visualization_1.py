@@ -1,5 +1,6 @@
 import pandas as pd
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 from enum import Enum, auto
 
@@ -25,12 +26,21 @@ def choice(firstOption):
     return "first" if firstOption == -1 else "second"
 
 
+def oneCategoricalChoice(option):
+    if option == 2 or option == 3 or option == 6 or option == 7 or option == 9 or option == 12 or option == 13 or option == 14:
+        return True
+    return False
+
+
 def menuOptions(colList, firstOption):
     print("Choose your", choice(firstOption), "Physiologic parameter :\n")
     i = 1
     while i < len(colList):
         if firstOption != i:
-            print("[", i, "] =>", PhysiologicParameters[colList[i]].value)
+            if firstOption != -1 and oneCategoricalChoice(i) == True:
+                print("[ X ] =>", PhysiologicParameters[colList[i]].value)
+            else:
+                print("[", i, "] =>", PhysiologicParameters[colList[i]].value)
         i = i + 1
     print("[ 0 ] => Exit")
 
@@ -48,6 +58,8 @@ def menu(colList, firstOption):
         elif option == firstOption:
             print("You already have selected", PhysiologicParameters[colList[option]].value, ". Please, choose an another parameter.")
             option = 0
+        elif oneCategoricalChoice(firstOption) == True and oneCategoricalChoice(option) == True:
+            print("You already have selected one categorical data. Please, choose an uncategorical.")
         elif option != 0:
             print(PhysiologicParameters[colList[option]].value, "has been choosed")
             if firstOption == -1:
@@ -64,15 +76,23 @@ if res == None:
     print("Exit")
     quit()
 
-x = data[data.columns[res[0]]].values
-print(x)
-y = data[data.columns[res[1]]].values
-print(y)
+range = input("Choose range of point of the dataset between 0 and 303 : ")
 
-if x != 42 and y != 42:
-    plt.scatter(x, y)
-
-    plt.tight_layout()
-    plt.show()
+if range and range.isdigit():
+    if int(range) < 0 or int(range) > 303:
+        range = '303'
 else:
-    pd.plotting.scatter_matrix(data.values, figsize=(10,10), marker = 'o')
+    range = '303'
+
+if res != 42 and res[0] != 42 and res[1] != 42:
+    x_value=data.columns.values[res[0]]
+    y_value=data.columns.values[res[1]]
+    data = data.drop('ID', axis=1)
+    if oneCategoricalChoice(res[0]) == False and oneCategoricalChoice(res[1]) == False:
+        sns.scatterplot(x=x_value, y=y_value, data=data.sample(int(range)))
+    else:
+        sns.catplot(x=x_value, y=y_value, data=data.sample(int(range)))
+else:
+    data = data.drop(['ID', 'SEX', 'CP', 'FBS', 'RESTECG', 'EXANG', 'SLOPE', 'CA', 'THAL', 'TARGET'], axis=1)
+    pd.plotting.scatter_matrix(data.sample(int(range)), figsize=(50,40))
+plt.show()
